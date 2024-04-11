@@ -15,11 +15,14 @@ CC_FLAGS=-c         \
 #
 all: $(PROJECT_NAME)
 
-$(PROJECT_NAME): tictactoe.o
-	$(CC) -o tictactoe tictactoe.o
+$(PROJECT_NAME): tictactoe.o draw.o
+	$(CC) -o tictactoe tictactoe.o draw.o
 
-tictactoe.o: tictactoe.c
+tictactoe.o: tictactoe.c draw.h
 	$(CC) tictactoe.c -o tictactoe.o  $(CC_FLAGS)
+
+draw.o: draw.c draw.h
+	$(CC) -o draw.o draw.c $(CC_FLAGS)
 
 clean:
 	\rm -rf *.o *~ tictactoe
