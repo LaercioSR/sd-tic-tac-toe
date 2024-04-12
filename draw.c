@@ -61,17 +61,8 @@ void drawBoard(void)
     printf("\n");
 }
 
-void drawX(int posX, int posY)
+void draw(int posX, int posY, char drawing[7][500])
 {
-    char drawing[7][500] = {
-        "           ",
-        "  ██   ██  ",
-        "   ██ ██   ",
-        "    ███    ",
-        "   ██ ██   ",
-        "  ██   ██  ",
-        "           ",
-    };
     int row = getRowPosition(posX);
     int col = getColPosition(posY);
     int i;
@@ -85,6 +76,20 @@ void drawX(int posX, int posY)
     fixPosition(row);
 }
 
+void drawX(int posX, int posY)
+{
+    char drawing[7][500] = {
+        "           ",
+        "  ██   ██  ",
+        "   ██ ██   ",
+        "    ███    ",
+        "   ██ ██   ",
+        "  ██   ██  ",
+        "           ",
+    };
+    draw(posX, posY, drawing);
+}
+
 void drawO(int posX, int posY)
 {
     char drawing[7][500] = {
@@ -96,15 +101,31 @@ void drawO(int posX, int posY)
         "   █████   ",
         "           ",
     };
-    int row = getRowPosition(posX);
-    int col = getColPosition(posY);
-    int i;
+    draw(posX, posY, drawing);
+}
 
-    changePosition(row, col);
-    for (i = 0; i < 7; i++)
-    {
-        printf("%s", drawing[i]);
-        breakRowInBlock();
-    }
-    fixPosition(row);
+void drawBlock(int posX, int posY)
+{
+    char drawing[7][500] = {
+        "░░░░░░░░░░░",
+        "░░░░░░░░░░░",
+        "░░░░░░░░░░░",
+        "░░░░░░░░░░░",
+        "░░░░░░░░░░░",
+        "░░░░░░░░░░░",
+        "░░░░░░░░░░░"};
+    draw(posX, posY, drawing);
+}
+
+void cleanBlock(int posX, int posY)
+{
+    char drawing[7][500] = {
+        "           ",
+        "           ",
+        "           ",
+        "           ",
+        "           ",
+        "           ",
+        "           "};
+    draw(posX, posY, drawing);
 }

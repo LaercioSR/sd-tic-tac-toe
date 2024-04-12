@@ -29,6 +29,31 @@ int checkWin(char board[SIZE_BOARD][SIZE_BOARD], char player)
     return 0;
 }
 
+void waitPlay(int player, int *row, int *col)
+{
+    int confirmation = 0;
+
+    do
+    {
+
+        printf("Player %d: ", player);
+        scanf("%d %d", row, col);
+        printf("\033[1A");
+
+        if (*row < 0 || *row > 2 || *col < 0 || *col > 2)
+        {
+            printf("Invalid position!\n");
+        }
+        drawBlock(*row, *col);
+        printf("Deseja confirmar? ");
+        scanf("%d", &confirmation);
+        printf("\033[1A");
+        if (!confirmation)
+            cleanBlock(*row, *col);
+        printf("                    \n\033[1A");
+    } while (!confirmation);
+}
+
 int main(void)
 {
     char board[SIZE_BOARD][SIZE_BOARD] = {
@@ -36,25 +61,17 @@ int main(void)
         {' ', ' ', ' '},
         {' ', ' ', ' '}};
     char playerValue;
-    int numPlays = 0, col, row;
+    int numPlays = 0, row, col;
     int isWinner = 0;
 
     drawBoard();
     while ((numPlays < 9) && !isWinner)
     {
         int player = numPlays % 2 + 1;
-        printf("Player %d: ", player);
-        scanf("%d %d", &row, &col);
-        printf("\033[1A");
-
-        if (row < 0 || row > 2 || col < 0 || col > 2)
-        {
-            printf("Invalid position!\n");
-            return 1;
-        }
+        waitPlay(player, &row, &col);
 
         playerValue = player == 1 ? 'X' : 'O';
-        board[col][row] = playerValue;
+        board[row][col] = playerValue;
 
         if (player == 1)
         {
