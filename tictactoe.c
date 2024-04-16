@@ -101,7 +101,7 @@ int main(void)
     int x = 1;
     int y = 1;
 
-    fileInput = open("/dev/input/event14", O_RDONLY);
+    fileInput = open("/dev/input/mice", O_RDONLY);
     if (fileInput == -1)
     {
         perror("Erro ao abrir o dispositivo de entrada");
