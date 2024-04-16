@@ -1,0 +1,10 @@
+{
+  "files.associations": {
+    ".env": "dotenv",
+    ".sequelizerc": "javascript",
+    "*.prisma": "prisma",
+    "stdint.h": "c",
+    "time.h": "c",
+    "mouse.h": "c"
+  }
+}

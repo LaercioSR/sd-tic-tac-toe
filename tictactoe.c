@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "draw.h"
+#include "mouse.h"
 
 #define SIZE_BOARD 3
 
