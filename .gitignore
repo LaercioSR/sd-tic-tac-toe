@@ -5,6 +5,8 @@
 /Lab*
 /tests
 
+/.vscode
+
 # Prerequisites
 *.d
 

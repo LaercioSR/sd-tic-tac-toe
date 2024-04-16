@@ -16,7 +16,7 @@ void breakRowInBlock(void)
     printf("\033[11D");
 }
 
-void changePosition(int up, int right)
+void moveCursor(int up, int right)
 {
     printf("\033[%dA", up);
     if (right)
@@ -67,7 +67,7 @@ void draw(int posX, int posY, char drawing[7][500])
     int col = getColPosition(posY);
     int i;
 
-    changePosition(row, col);
+    moveCursor(row, col);
     for (i = 0; i < 7; i++)
     {
         printf("%s", drawing[i]);
