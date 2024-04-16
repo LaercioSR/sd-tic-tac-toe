@@ -123,6 +123,7 @@ int main(void)
         }
         if (event.type == EV_REL && event.code == REL_X)
         {
+            printf("x: %d\n", x);
             if (event.value > 0 && x < 1499)
             {
                 x++;
@@ -140,6 +141,7 @@ int main(void)
         }
         if (event.type == EV_REL && event.code == REL_Y)
         {
+            printf("y: %d\n", y);
             if (event.value > 0 && y < 1499)
             {
                 y++;
@@ -157,6 +159,7 @@ int main(void)
         }
         if (event.type == EV_KEY)
         {
+            printf("key: %d\n", event.value);
             qttClick++;
             if (qttClick == 2)
             {
