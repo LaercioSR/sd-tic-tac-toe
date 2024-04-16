@@ -74,7 +74,7 @@ void waitPlay(int player, int *row, int *col)
 
 void changePosition(char board[SIZE_BOARD][SIZE_BOARD], int row, int col, int lastRow, int lastCol)
 {
-    printf("\033[1APosição atual: %d %d\n", row, col);
+    // printf("\033[1APosição atual: %d %d\n", row, col);
     cleanBlock(lastRow, lastCol);
     drawBlock(row, col);
     if (board[row][col] == 'X')
@@ -101,7 +101,7 @@ int main(void)
     int x = 1;
     int y = 1;
 
-    fileInput = open("/dev/input/mice", O_RDONLY);
+    fileInput = open("/dev/input/event7", O_RDONLY);
     if (fileInput == -1)
     {
         perror("Erro ao abrir o dispositivo de entrada");
@@ -113,10 +113,8 @@ int main(void)
     while ((numPlays < 9) && !isWinner)
     {
         int player = numPlays % 2 + 1;
-        printf("Player %d\n", player);
 
         ssize_t bytes = read(fileInput, &event, sizeof(event));
-        printf("bytes: %ld\n", bytes);
         if (bytes == -1)
         {
             perror("Erro ao ler o evento");
@@ -125,7 +123,6 @@ int main(void)
         }
         if (event.type == EV_REL && event.code == REL_X)
         {
-            printf("x: %d\n", x);
             if (event.value > 0 && x < 1499)
             {
                 x++;
@@ -143,7 +140,6 @@ int main(void)
         }
         if (event.type == EV_REL && event.code == REL_Y)
         {
-            printf("y: %d\n", y);
             if (event.value > 0 && y < 1499)
             {
                 y++;
@@ -161,7 +157,6 @@ int main(void)
         }
         if (event.type == EV_KEY)
         {
-            printf("key: %d\n", event.value);
             qttClick++;
             if (qttClick == 2)
             {
