@@ -5,6 +5,7 @@
     "*.prisma": "prisma",
     "stdint.h": "c",
     "time.h": "c",
-    "mouse.h": "c"
+    "mouse.h": "c",
+    "unistd.h": "c"
   }
 }
