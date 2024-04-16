@@ -74,6 +74,7 @@ void waitPlay(int player, int *row, int *col)
 
 void changePosition(char board[SIZE_BOARD][SIZE_BOARD], int row, int col, int lastRow, int lastCol)
 {
+    printf("\033[1APosição atual: %d %d\n", row, col);
     cleanBlock(lastRow, lastCol);
     drawBlock(row, col);
     if (board[row][col] == 'X')
@@ -108,6 +109,7 @@ int main(void)
     }
 
     drawBoard();
+    drawBlock(row, col);
     while ((numPlays < 9) && !isWinner)
     {
         int player = numPlays % 2 + 1;
