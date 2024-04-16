@@ -1,9 +1,24 @@
 #include <stdio.h>
 #include <stdlib.h>
+// #include <stdint.h>
+// #include <sys/time.h>
 #include "draw.h"
-#include "mouse.h"
 
 #define SIZE_BOARD 3
+
+// #define EV_KEY 0x01
+// #define EV_REL 0x02
+
+// #define REL_X 0x00
+// #define REL_Y 0x01
+
+// struct input_event
+// {
+//     struct timeval time;
+//     uint16_t type;
+//     uint16_t code;
+//     int32_t value;
+// };
 
 int checkWin(char board[SIZE_BOARD][SIZE_BOARD], char player)
 {

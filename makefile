@@ -15,17 +15,14 @@ CC_FLAGS=-c         \
 #
 all: $(PROJECT_NAME)
 
-$(PROJECT_NAME): tictactoe.o draw.o mouse.o
-	$(CC) -o tictactoe tictactoe.o draw.o mouse.o
+$(PROJECT_NAME): tictactoe.o draw.o
+	$(CC) -o tictactoe tictactoe.o draw.o
 
-tictactoe.o: tictactoe.c draw.h mouse.h
-	$(CC) tictactoe.c -o tictactoe.o  $(CC_FLAGS)
+tictactoe.o: tictactoe.c draw.h
+	$(CC) tictactoe.c -o tictactoe.o $(CC_FLAGS)
 
 draw.o: draw.c draw.h
 	$(CC) -o draw.o draw.c $(CC_FLAGS)
-
-mouse.o: mouse.c mouse.h
-	$(CC) -o mouse.o mouse.c $(CC_FLAGS)
 
 clean:
 	\rm -rf *.o *~ tictactoe
