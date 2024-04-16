@@ -74,8 +74,16 @@ void waitPlay(int player, int *row, int *col)
 
 void changePosition(char board[SIZE_BOARD][SIZE_BOARD], int row, int col, int lastRow, int lastCol)
 {
-    // printf("\033[1APosição atual: %d %d\n", row, col);
+    printf("\033[1APosição atual: %d %d\n", row, col);
     cleanBlock(lastRow, lastCol);
+    if (board[lastRow][lastCol] == 'X')
+    {
+        drawX(lastRow, lastCol);
+    }
+    else if (board[lastRow][lastCol] == 'O')
+    {
+        drawO(lastRow, lastCol);
+    }
     drawBlock(row, col);
     if (board[row][col] == 'X')
     {
@@ -155,7 +163,7 @@ int main(void)
                 qttClick = 0;
             }
         }
-        if (event.type == EV_KEY)
+        if (event.type == EV_KEY && event.value == 1)
         {
             qttClick++;
             if (qttClick == 2)
