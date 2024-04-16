@@ -113,8 +113,10 @@ int main(void)
     while ((numPlays < 9) && !isWinner)
     {
         int player = numPlays % 2 + 1;
+        printf("Player %d\n", player);
 
         ssize_t bytes = read(fileInput, &event, sizeof(event));
+        printf("bytes: %ld\n", bytes);
         if (bytes == -1)
         {
             perror("Erro ao ler o evento");
