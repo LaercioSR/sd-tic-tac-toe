@@ -7,6 +7,7 @@
 #include "draw.h"
 
 #define SIZE_BOARD 3
+#define SIZE_BLOCK 100
 
 #define EV_KEY 0x01
 #define EV_REL 0x02
@@ -104,6 +105,7 @@ int main(void)
         {' ', ' ', ' '},
         {' ', ' ', ' '}};
     char playerValue;
+    int maxBoardSize = SIZE_BLOCK * 3 - 1;
     int numPlays = 0, row = 0, col = 0, qttClick = 0;
     int isWinner = 0;
     int x = 1;
@@ -131,7 +133,7 @@ int main(void)
         }
         if (event.type == EV_REL && event.code == REL_X)
         {
-            if (event.value > 0 && x < 1499)
+            if (event.value > 0 && x < maxBoardSize)
             {
                 x++;
             }
@@ -139,16 +141,16 @@ int main(void)
             {
                 x--;
             }
-            if (col != (x / 500))
+            if (col != (x / SIZE_BLOCK))
             {
-                changePosition(board, row, (x / 500), row, col);
-                col = (x / 500);
+                changePosition(board, row, (x / SIZE_BLOCK), row, col);
+                col = (x / SIZE_BLOCK);
                 qttClick = 0;
             }
         }
         if (event.type == EV_REL && event.code == REL_Y)
         {
-            if (event.value > 0 && y < 1499)
+            if (event.value > 0 && y < maxBoardSize)
             {
                 y++;
             }
@@ -156,10 +158,10 @@ int main(void)
             {
                 y--;
             }
-            if (row != (y / 500))
+            if (row != (y / SIZE_BLOCK))
             {
-                changePosition(board, (y / 500), col, row, col);
-                row = (y / 500);
+                changePosition(board, (y / SIZE_BLOCK), col, row, col);
+                row = (y / SIZE_BLOCK);
                 qttClick = 0;
             }
         }
