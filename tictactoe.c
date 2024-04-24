@@ -192,6 +192,7 @@ int main(void)
             }
         }
     }
+    close(fileInput);
 
     return 0;
 }
