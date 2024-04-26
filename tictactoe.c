@@ -4,7 +4,10 @@
 #include <unistd.h>
 #include <stdint.h>
 #include <sys/time.h>
+#include <intelfpgaup/KEY.h>
 #include "draw.h"
+
+#define EVENT_FILE "/dev/input/event0"
 
 #define SIZE_BOARD 3
 #define SIZE_BLOCK 100
@@ -105,21 +108,40 @@ int main(void)
         {' ', ' ', ' '},
         {' ', ' ', ' '}};
     char playerValue;
+    int button_state = 0;
     int maxBoardSize = SIZE_BLOCK * 3 - 1;
     int numPlays = 0, row = 0, col = 0, qttClick = 0;
     int isWinner = 0;
+    int startGame = 0;
     int x = 1;
     int y = 1;
 
-    fileInput = open("/dev/input/event7", O_RDONLY);
+    fileInput = open(EVENT_FILE, O_RDONLY);
     if (fileInput == -1)
     {
         perror("Erro ao abrir o dispositivo de entrada");
         return 1;
     }
+    KEY_open();
+
+    printf("Aperte botão para iniciar o jogo...\n");
+    while (!startGame)
+    {
+        if (!KEY_read(&button_state))
+        {
+            printf("Erro ao ler o estado do push button.\n");
+        }
+
+        if (button_state == 1)
+        {
+            startGame = button_state;
+        }
+    }
+    printf("\033[1A");
 
     drawBoard();
     drawBlock(row, col);
+
     while ((numPlays < 9) && !isWinner)
     {
         int player = numPlays % 2 + 1;
@@ -129,6 +151,7 @@ int main(void)
         {
             perror("Erro ao ler o evento");
             close(fileInput);
+            KEY_close();
             return 1;
         }
         if (event.type == EV_REL && event.code == REL_X)
@@ -195,6 +218,7 @@ int main(void)
         }
     }
     close(fileInput);
+    KEY_close();
 
     return 0;
 }

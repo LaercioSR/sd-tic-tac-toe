@@ -16,7 +16,7 @@ CC_FLAGS=-c         \
 all: $(PROJECT_NAME)
 
 $(PROJECT_NAME): tictactoe.o draw.o
-	$(CC) -o tictactoe tictactoe.o draw.o
+	$(CC) -o tictactoe tictactoe.o draw.o -lintelfpgaup
 
 tictactoe.o: tictactoe.c draw.h
 	$(CC) tictactoe.c -o tictactoe.o $(CC_FLAGS)
