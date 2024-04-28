@@ -1,30 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include <stdint.h>
-#include <sys/time.h>
 #include <intelfpgaup/KEY.h>
 #include "draw.h"
-
-#define EVENT_FILE "/dev/input/event0"
+#include "mouse.h"
 
 #define SIZE_BOARD 3
-#define SIZE_BLOCK 100
-
-#define EV_KEY 0x01
-#define EV_REL 0x02
-
-#define REL_X 0x00
-#define REL_Y 0x01
-
-struct input_event
-{
-    struct timeval time;
-    uint16_t type;
-    uint16_t code;
-    int32_t value;
-};
+#define SIZE_BLOCK 500
 
 int checkWin(char board[SIZE_BOARD][SIZE_BOARD], char player)
 {
@@ -101,8 +82,6 @@ void changePosition(char board[SIZE_BOARD][SIZE_BOARD], int row, int col, int la
 
 int main(void)
 {
-    int fileInput;
-    struct input_event event;
     char board[SIZE_BOARD][SIZE_BOARD] = {
         {' ', ' ', ' '},
         {' ', ' ', ' '},
@@ -116,12 +95,7 @@ int main(void)
     int x = 1;
     int y = 1;
 
-    fileInput = open(EVENT_FILE, O_RDONLY);
-    if (fileInput == -1)
-    {
-        perror("Erro ao abrir o dispositivo de entrada");
-        return 1;
-    }
+    openMouse();
     KEY_open();
 
     printf("Aperte botão para iniciar o jogo...\n");
@@ -146,21 +120,14 @@ int main(void)
     {
         int player = numPlays % 2 + 1;
 
-        ssize_t bytes = read(fileInput, &event, sizeof(event));
-        if (bytes == -1)
+        input_mouse event = readMouse();
+        if (event.x != 0)
         {
-            perror("Erro ao ler o evento");
-            close(fileInput);
-            KEY_close();
-            return 1;
-        }
-        if (event.type == EV_REL && event.code == REL_X)
-        {
-            if (event.value > 0 && x < maxBoardSize)
+            if (event.x > 0 && x < maxBoardSize)
             {
                 x++;
             }
-            else if (event.value < 0 && x > 0)
+            else if (event.x < 0 && x > 0)
             {
                 x--;
             }
@@ -171,13 +138,13 @@ int main(void)
                 qttClick = 0;
             }
         }
-        if (event.type == EV_REL && event.code == REL_Y)
+        if (event.y != 0)
         {
-            if (event.value > 0 && y < maxBoardSize)
+            if (event.y < 0 && y < maxBoardSize)
             {
                 y++;
             }
-            else if (event.value < 0 && y > 0)
+            else if (event.y > 0 && y > 0)
             {
                 y--;
             }
@@ -188,7 +155,7 @@ int main(void)
                 qttClick = 0;
             }
         }
-        if (event.type == EV_KEY && event.value == 1)
+        if (event.click == 1)
         {
             qttClick++;
             if (qttClick == 2)
@@ -217,7 +184,7 @@ int main(void)
             }
         }
     }
-    close(fileInput);
+    closeMouse();
     KEY_close();
 
     return 0;
