@@ -18,7 +18,7 @@ CC_FLAG_FPGA=-lintelfpgaup
 all: $(PROJECT_NAME)
 
 $(PROJECT_NAME): tictactoe.o draw.o mouse.o
-	$(CC) -o tictactoe tictactoe.o draw.o mouse.o
+	$(CC) -o tictactoe tictactoe.o draw.o mouse.o $(CC_FLAG_FPGA)
 
 tictactoe.o: tictactoe.c draw.h mouse.h
 	$(CC) tictactoe.c -o tictactoe.o $(CC_FLAGS)

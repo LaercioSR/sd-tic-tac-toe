@@ -1,22 +1,26 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <intelfpgaup/KEY.h>
+#include <intelfpgaup/HEX.h>
 #include "draw.h"
 #include "mouse.h"
 
 #define SIZE_BOARD 3
-#define SIZE_BLOCK 500
+#define SIZE_BLOCK 150
 
 int checkWin(char board[SIZE_BOARD][SIZE_BOARD], char player)
 {
     int i, j;
-    int isWinnerDiag = 1;
+    int isWinnerDiag1 = 1;
+    int isWinnerDiag2 = 1;
+    int maxPosBoard = SIZE_BOARD - 1;
     for (i = 0; i < SIZE_BOARD; i++)
     {
         int isWinnerRow = 1;
         int isWinnerCol = 1;
 
-        isWinnerDiag = isWinnerDiag && (board[i][i] == player);
+        isWinnerDiag1 = isWinnerDiag1 && (board[i][i] == player);
+        isWinnerDiag2 = isWinnerDiag2 && (board[i][maxPosBoard - i] == player);
         for (j = 0; j < SIZE_BOARD; j++)
         {
             isWinnerRow = isWinnerRow && (board[i][j] == player);
@@ -26,7 +30,7 @@ int checkWin(char board[SIZE_BOARD][SIZE_BOARD], char player)
             return 1;
     }
 
-    if (isWinnerDiag)
+    if (isWinnerDiag1 || isWinnerDiag2)
         return 1;
 
     return 0;
@@ -80,6 +84,17 @@ void changePosition(char board[SIZE_BOARD][SIZE_BOARD], int row, int col, int la
     }
 }
 
+void showWinner(int player)
+{
+    /*              6543210 6543210*/
+    int data_h = 0b0111001100111000;
+    /*                            6543210 6543210 6543210 6543210*/
+    int data_l = player == 1 ? 0b01110111011001100000000000000110
+                             : 0b01110111011001100000000000111111;
+
+    HEX_raw(data_h, data_l);
+}
+
 int main(void)
 {
     char board[SIZE_BOARD][SIZE_BOARD] = {
@@ -97,6 +112,7 @@ int main(void)
 
     openMouse();
     KEY_open();
+    HEX_open();
 
     printf("Aperte botão para iniciar o jogo...\n");
     while (!startGame)
@@ -113,12 +129,16 @@ int main(void)
     }
     printf("\033[1A");
 
+    HEX_raw(0, 0);
     drawBoard();
     drawBlock(row, col);
 
     while ((numPlays < 9) && !isWinner)
     {
         int player = numPlays % 2 + 1;
+        int playerSegments = player == 1 ? 0b00000000000000000000000000000110
+                                         : 0b00000000000000000000000000111111;
+        HEX_raw(0, playerSegments);
 
         input_mouse event = readMouse();
         if (event.x != 0)
@@ -174,9 +194,15 @@ int main(void)
                         drawO(row, col);
                     }
 
-                    isWinner = checkWin(board, playerValue);
-                    if (isWinner)
-                        printf("Player %d is winner!!!\n", player);
+                    if ((SIZE_BOARD * 2) - 1)
+                    {
+                        isWinner = checkWin(board, playerValue);
+                        if (isWinner)
+                        {
+                            showWinner(player);
+                            printf("Player %d is winner!!!\n", player);
+                        }
+                    }
 
                     numPlays += 1;
                 }
@@ -184,8 +210,13 @@ int main(void)
             }
         }
     }
+    if (!isWinner)
+    {
+        printf("Empate!!!\n");
+    }
     closeMouse();
     KEY_close();
+    HEX_close();
 
     return 0;
 }
