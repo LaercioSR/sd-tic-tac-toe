@@ -21,7 +21,7 @@ $(PROJECT_NAME): tictactoe.o draw.o mouse.o
 	$(CC) -o tictactoe tictactoe.o draw.o mouse.o $(CC_FLAG_FPGA)
 
 tictactoe.o: tictactoe.c draw.h mouse.h
-	$(CC) tictactoe.c -o tictactoe.o $(CC_FLAGS)
+	$(CC) main.c -o tictactoe.o $(CC_FLAGS)
 
 draw.o: draw.c draw.h
 	$(CC) -o draw.o draw.c $(CC_FLAGS)

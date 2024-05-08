@@ -56,7 +56,7 @@ void waitPlay(int player, int *row, int *col)
             printf("Invalid position!\n");
         }
         drawBlock(*row, *col);
-        printf("Deseja confirmar? ");
+        printf("Do you want to confirm move? ");
         scanf("%d", &confirmation);
         printf("\033[1A");
         if (!confirmation)
@@ -67,7 +67,7 @@ void waitPlay(int player, int *row, int *col)
 
 void changePosition(char board[SIZE_BOARD][SIZE_BOARD], int row, int col, int lastRow, int lastCol)
 {
-    printf("\033[1APosição atual: %d %d\n", row, col);
+    printf("\033[1ACurrent position: %d %d\n", row, col);
     cleanBlock(lastRow, lastCol);
     if (board[lastRow][lastCol] == 'X')
     {
@@ -134,7 +134,7 @@ int main(void)
         {
             if (!KEY_read(&buttonState))
             {
-                printf("Erro ao ler o estado do push button.\n");
+                printf("ERROR to read push button state.\n");
             }
 
             if (buttonState == 1)
@@ -154,6 +154,7 @@ int main(void)
             drawBoard();
             drawBlock(row, col);
 
+            printf("\033[1ACurrent position: 0 0\n", row, col);
             while ((numPlays < 9) && !isWinner)
             {
                 int player = numPlays % 2 + 1;
@@ -233,7 +234,7 @@ int main(void)
             }
             if (!isWinner)
             {
-                printf("Empate!!!\n");
+                printf("GAME DRAW!!!\n");
             }
         }
         else
