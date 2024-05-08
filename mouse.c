@@ -1,21 +1,35 @@
+/**
+ * @file mouse.c
+ * @brief Implementation of mouse input data reading library.
+ */
 #include <stdio.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include "mouse.h"
 
+/** File with data from all connected mice */
 #define EVENT_FILE "/dev/input/mice"
 
+/** File descriptor */
 int fd;
 
+/**
+ * @brief Function to open mice input file, enabling data reading.
+ */
 void openMouse()
 {
     fd = open(EVENT_FILE, O_RDWR);
     if (fd == -1)
     {
-        printf("ERROR Opening %s\n", EVENT_FILE);
+        printf("ERROR Opening mice input file %s\n", EVENT_FILE);
     }
 }
 
+/**
+ * @brief Function to read mouse input data.
+ *
+ * @return input_mouse
+ */
 input_mouse readMouse()
 {
     int bytes;
@@ -34,6 +48,9 @@ input_mouse readMouse()
     return mouse;
 }
 
+/**
+ * @brief Function to close mice input file.
+ */
 void closeMouse()
 {
     close(fd);

@@ -1,3 +1,7 @@
+/**
+ * @file tictactoe.c
+ * @brief Main file
+ */
 #include <stdio.h>
 #include <stdlib.h>
 #include <intelfpgaup/KEY.h>
@@ -95,6 +99,13 @@ void showWinner(int player)
     HEX_raw(data_h, data_l);
 }
 
+void finishGame(void)
+{
+    closeMouse();
+    KEY_close();
+    HEX_close();
+}
+
 int main(void)
 {
     char board[SIZE_BOARD][SIZE_BOARD] = {
@@ -102,11 +113,12 @@ int main(void)
         {' ', ' ', ' '},
         {' ', ' ', ' '}};
     char playerValue;
-    int button_state = 0;
+    int buttonState = 0;
     int maxBoardSize = SIZE_BLOCK * 3 - 1;
     int numPlays = 0, row = 0, col = 0, qttClick = 0;
     int isWinner = 0;
     int startGame = 0;
+    int flagFinish = 0;
     int x = 1;
     int y = 1;
 
@@ -114,109 +126,121 @@ int main(void)
     KEY_open();
     HEX_open();
 
-    printf("Aperte botão para iniciar o jogo...\n");
-    while (!startGame)
+    while (!flagFinish)
     {
-        if (!KEY_read(&button_state))
+        printf("Press button 1 to start the game\n");
+        printf("Press button 2 to end the game\n");
+        while (!buttonState)
         {
-            printf("Erro ao ler o estado do push button.\n");
-        }
-
-        if (button_state == 1)
-        {
-            startGame = button_state;
-        }
-    }
-    printf("\033[1A");
-
-    HEX_raw(0, 0);
-    drawBoard();
-    drawBlock(row, col);
-
-    while ((numPlays < 9) && !isWinner)
-    {
-        int player = numPlays % 2 + 1;
-        int playerSegments = player == 1 ? 0b00000000000000000000000000000110
-                                         : 0b00000000000000000000000000111111;
-        HEX_raw(0, playerSegments);
-
-        input_mouse event = readMouse();
-        if (event.x != 0)
-        {
-            if (event.x > 0 && x < maxBoardSize)
+            if (!KEY_read(&buttonState))
             {
-                x++;
+                printf("Erro ao ler o estado do push button.\n");
             }
-            else if (event.x < 0 && x > 0)
+
+            if (buttonState == 1)
             {
-                x--;
+                startGame = buttonState;
             }
-            if (col != (x / SIZE_BLOCK))
+            else if (buttonState == 0b0010)
             {
-                changePosition(board, row, (x / SIZE_BLOCK), row, col);
-                col = (x / SIZE_BLOCK);
-                qttClick = 0;
+                flagFinish = 1;
             }
         }
-        if (event.y != 0)
+        printf("\033[2A");
+
+        if (startGame)
         {
-            if (event.y < 0 && y < maxBoardSize)
+            HEX_raw(0, 0);
+            drawBoard();
+            drawBlock(row, col);
+
+            while ((numPlays < 9) && !isWinner)
             {
-                y++;
-            }
-            else if (event.y > 0 && y > 0)
-            {
-                y--;
-            }
-            if (row != (y / SIZE_BLOCK))
-            {
-                changePosition(board, (y / SIZE_BLOCK), col, row, col);
-                row = (y / SIZE_BLOCK);
-                qttClick = 0;
-            }
-        }
-        if (event.click == 1)
-        {
-            qttClick++;
-            if (qttClick == 2)
-            {
-                if (board[row][col] == ' ')
+                int player = numPlays % 2 + 1;
+                int playerSegments = player == 1 ? 0b00000000000000000000000000000110
+                                                 : 0b00000000000000000000000000111111;
+                HEX_raw(0, playerSegments);
+
+                input_mouse event = readMouse();
+                if (event.x != 0)
                 {
-                    playerValue = player == 1 ? 'X' : 'O';
-                    board[row][col] = playerValue;
-
-                    if (player == 1)
+                    if (event.x > 0 && x < maxBoardSize)
                     {
-                        drawX(row, col);
+                        x++;
                     }
-                    else
+                    else if (event.x < 0 && x > 0)
                     {
-                        drawO(row, col);
+                        x--;
                     }
-
-                    if ((SIZE_BOARD * 2) - 1)
+                    if (col != (x / SIZE_BLOCK))
                     {
-                        isWinner = checkWin(board, playerValue);
-                        if (isWinner)
-                        {
-                            showWinner(player);
-                            printf("Player %d is winner!!!\n", player);
-                        }
+                        changePosition(board, row, (x / SIZE_BLOCK), row, col);
+                        col = (x / SIZE_BLOCK);
+                        qttClick = 0;
                     }
-
-                    numPlays += 1;
                 }
-                qttClick = 0;
+                if (event.y != 0)
+                {
+                    if (event.y < 0 && y < maxBoardSize)
+                    {
+                        y++;
+                    }
+                    else if (event.y > 0 && y > 0)
+                    {
+                        y--;
+                    }
+                    if (row != (y / SIZE_BLOCK))
+                    {
+                        changePosition(board, (y / SIZE_BLOCK), col, row, col);
+                        row = (y / SIZE_BLOCK);
+                        qttClick = 0;
+                    }
+                }
+                if (event.click == 1)
+                {
+                    qttClick++;
+                    if (qttClick == 2)
+                    {
+                        if (board[row][col] == ' ')
+                        {
+                            playerValue = player == 1 ? 'X' : 'O';
+                            board[row][col] = playerValue;
+
+                            if (player == 1)
+                            {
+                                drawX(row, col);
+                            }
+                            else
+                            {
+                                drawO(row, col);
+                            }
+
+                            if ((SIZE_BOARD * 2) - 1)
+                            {
+                                isWinner = checkWin(board, playerValue);
+                                if (isWinner)
+                                {
+                                    showWinner(player);
+                                    printf("Player %d is winner!!!\n", player);
+                                }
+                            }
+
+                            numPlays += 1;
+                        }
+                        qttClick = 0;
+                    }
+                }
+            }
+            if (!isWinner)
+            {
+                printf("Empate!!!\n");
             }
         }
+        else
+        {
+            finishGame();
+        }
     }
-    if (!isWinner)
-    {
-        printf("Empate!!!\n");
-    }
-    closeMouse();
-    KEY_close();
-    HEX_close();
 
     return 0;
 }
