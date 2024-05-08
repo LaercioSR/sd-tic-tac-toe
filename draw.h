@@ -11,14 +11,35 @@
 void drawBoard(void);
 
 /**
- * @brief
+ * @brief Function to draw X in a specific position
  *
- * @param posX
- * @param posY
+ * @param posX Horizontal position, from 0 to 2
+ * @param posY Vertical position, from 0 to 2
  */
 void drawX(int posX, int posY);
+
+/**
+ * @brief Function to draw O in a specific position
+ *
+ * @param posX Horizontal position, from 0 to 2
+ * @param posY Vertical position, from 0 to 2
+ */
 void drawO(int posX, int posY);
+
+/**
+ * @brief Function to draw a dark block in a specific position
+ *
+ * @param posX Horizontal position, from 0 to 2
+ * @param posY Vertical position, from 0 to 2
+ */
 void drawBlock(int posX, int posY);
+
+/**
+ * @brief Function to clean block in a specific position, removing all non-empty characters from the block
+ *
+ * @param posX Horizontal position, from 0 to 2
+ * @param posY Vertical position, from 0 to 2
+ */
 void cleanBlock(int posX, int posY);
 
 #endif /*DRAW_H*/
