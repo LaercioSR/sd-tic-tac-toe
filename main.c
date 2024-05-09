@@ -94,7 +94,7 @@ void showWinner(int player)
     int data_h = 0b0111001100111000;
     /*                            6543210 6543210 6543210 6543210*/
     int data_l = player == 1 ? 0b01110111011001100000000000000110
-                             : 0b01110111011001100000000000111111;
+                             : 0b01110111011001100000000001011011;
 
     HEX_raw(data_h, data_l);
 }
@@ -126,6 +126,7 @@ int main(void)
     KEY_open();
     HEX_open();
 
+    system("clear");
     while (!flagFinish)
     {
         printf("Press button 1 to start the game\n");
@@ -141,15 +142,18 @@ int main(void)
             {
                 startGame = buttonState;
             }
-            else if (buttonState == 0b0010)
+            else if (buttonState == 2)
             {
                 flagFinish = 1;
             }
         }
-        printf("\033[2A");
+        printf("\033[3A");
 
+        buttonState = 0;
+        system("clear");
         if (startGame)
         {
+            startGame = 0;
             HEX_raw(0, 0);
             drawBoard();
             drawBlock(row, col);
@@ -159,7 +163,7 @@ int main(void)
             {
                 int player = numPlays % 2 + 1;
                 int playerSegments = player == 1 ? 0b00000000000000000000000000000110
-                                                 : 0b00000000000000000000000000111111;
+                                                 : 0b00000000000000000000000001011011;
                 HEX_raw(0, playerSegments);
 
                 input_mouse event = readMouse();
@@ -222,7 +226,7 @@ int main(void)
                                 if (isWinner)
                                 {
                                     showWinner(player);
-                                    printf("Player %d is winner!!!\n", player);
+                                    printf("Player %d is winner!!!\n\n", player);
                                 }
                             }
 
@@ -234,8 +238,22 @@ int main(void)
             }
             if (!isWinner)
             {
-                printf("GAME DRAW!!!\n");
+                printf("GAME DRAW!!!\n\n");
             }
+
+            numPlays = 0, row = 0, col = 0;
+            isWinner = 0;
+            x = 1;
+            y = 1;
+            board[0][0] = ' ';
+            board[0][1] = ' ';
+            board[0][2] = ' ';
+            board[1][0] = ' ';
+            board[1][1] = ' ';
+            board[1][2] = ' ';
+            board[2][0] = ' ';
+            board[2][1] = ' ';
+            board[2][2] = ' ';
         }
         else
         {
