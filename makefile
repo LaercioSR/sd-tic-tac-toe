@@ -7,8 +7,7 @@ CC=gcc
 CC_FLAGS=-c         \
          -W         \
          -Wall      \
-         -ansi      \
-         -pedantic
+         -ansi
 
 CC_FLAG_FPGA=-lintelfpgaup
 
@@ -30,4 +29,7 @@ mouse.o: mouse.c mouse.h
 	$(CC) -o mouse.o mouse.c $(CC_FLAGS)
 
 clean:
-	\rm -rf *.o *~ tictactoe
+	\rm -rf *.o *~
+
+clean-all:
+	\rm -rf *.o *~ $(PROJECT_NAME)

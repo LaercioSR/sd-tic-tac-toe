@@ -12,6 +12,23 @@
 #define SIZE_BOARD 3
 #define SIZE_BLOCK 150
 
+void drawWinLine(int positions[3][2], char player)
+{
+    int i;
+    for (i = 0; i < 3; i++)
+    {
+        drawBlock(positions[i][0], positions[i][1]);
+        if (player == 'X')
+        {
+            drawX(positions[i][0], positions[i][1]);
+        }
+        else
+        {
+            drawO(positions[i][0], positions[i][1]);
+        }
+    }
+}
+
 int checkWin(char board[SIZE_BOARD][SIZE_BOARD], char player)
 {
     int i, j;
@@ -30,12 +47,32 @@ int checkWin(char board[SIZE_BOARD][SIZE_BOARD], char player)
             isWinnerRow = isWinnerRow && (board[i][j] == player);
             isWinnerCol = isWinnerCol && (board[j][i] == player);
         }
-        if (isWinnerRow || isWinnerCol)
+        if (isWinnerRow)
+        {
+            int line[3][2] = {{i, 0}, {i, 1}, {i, 2}};
+            drawWinLine(line, player);
             return 1;
+        }
+        else if (isWinnerCol)
+        {
+            int line[3][2] = {{0, i}, {1, i}, {2, i}};
+            drawWinLine(line, player);
+            return 1;
+        }
     }
 
-    if (isWinnerDiag1 || isWinnerDiag2)
+    if (isWinnerDiag1)
+    {
+        int line[3][2] = {{0, 0}, {1, 1}, {2, 2}};
+        drawWinLine(line, player);
         return 1;
+    }
+    else if (isWinnerDiag2)
+    {
+        int line[3][2] = {{0, 2}, {1, 1}, {2, 0}};
+        drawWinLine(line, player);
+        return 1;
+    }
 
     return 0;
 }
@@ -67,7 +104,6 @@ void waitPlay(int player, int *row, int *col)
 
 void changePosition(char board[SIZE_BOARD][SIZE_BOARD], int row, int col, int lastRow, int lastCol)
 {
-    printf("\033[1ACurrent position: %d %d\n", row, col);
     cleanBlock(lastRow, lastCol);
     if (board[lastRow][lastCol] == 'X')
     {
@@ -93,7 +129,7 @@ void showWinner(int player)
     /*              6543210 6543210*/
     int data_h = 0b0111001100111000;
     /*                            6543210 6543210 6543210 6543210*/
-    int data_l = player == 1 ? 0b01110111011001100000000000000110
+    int data_l = player == 1 ? 0b01110111011011100000000000000110
                              : 0b01110111011001100000000001011011;
 
     HEX_raw(data_h, data_l);
@@ -158,7 +194,6 @@ int main(void)
             drawBoard();
             drawBlock(row, col);
 
-            printf("\033[1ACurrent position: 0 0\n", row, col);
             while ((numPlays < 9) && !isWinner)
             {
                 int player = numPlays % 2 + 1;
@@ -241,22 +276,22 @@ int main(void)
                 printf("GAME DRAW!!!\n\n");
             }
 
+            /* Reset Game */
             numPlays = 0, row = 0, col = 0;
             isWinner = 0;
             x = 1;
             y = 1;
-            board[0][0] = ' ';
-            board[0][1] = ' ';
-            board[0][2] = ' ';
-            board[1][0] = ' ';
-            board[1][1] = ' ';
-            board[1][2] = ' ';
-            board[2][0] = ' ';
-            board[2][1] = ' ';
-            board[2][2] = ' ';
+            for (int i = 0; i < SIZE_BOARD; i++)
+            {
+                for (int j = 0; j < SIZE_BOARD; j++)
+                {
+                    board[i][j] = ' ';
+                }
+            }
         }
         else
         {
+            HEX_raw(0b0, 0b0);
             finishGame();
         }
     }
