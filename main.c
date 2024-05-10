@@ -12,6 +12,12 @@
 #define SIZE_BOARD 3
 #define SIZE_BLOCK 150
 
+/**
+ * @brief Function to highlight winning positions.
+ *
+ * @param positions Winning positions.
+ * @param player Winner player character.
+ */
 void drawWinLine(int positions[3][2], char player)
 {
     int i;
@@ -29,6 +35,13 @@ void drawWinLine(int positions[3][2], char player)
     }
 }
 
+/**
+ * @brief Function to check condition of winning.
+ *
+ * @param board Board game.
+ * @param player Character of current player.
+ * @return int
+ */
 int checkWin(char board[SIZE_BOARD][SIZE_BOARD], char player)
 {
     int i, j;
@@ -77,31 +90,15 @@ int checkWin(char board[SIZE_BOARD][SIZE_BOARD], char player)
     return 0;
 }
 
-void waitPlay(int player, int *row, int *col)
-{
-    int confirmation = 0;
-
-    do
-    {
-
-        printf("Player %d: ", player);
-        scanf("%d %d", row, col);
-        printf("\033[1A");
-
-        if (*row < 0 || *row > 2 || *col < 0 || *col > 2)
-        {
-            printf("Invalid position!\n");
-        }
-        drawBlock(*row, *col);
-        printf("Do you want to confirm move? ");
-        scanf("%d", &confirmation);
-        printf("\033[1A");
-        if (!confirmation)
-            cleanBlock(*row, *col);
-        printf("                    \n\033[1A");
-    } while (!confirmation);
-}
-
+/**
+ * @brief Function to handle position change
+ *
+ * @param board Board game.
+ * @param row New row position.
+ * @param col New column position.
+ * @param lastRow Last row position.
+ * @param lastCol Last column position.
+ */
 void changePosition(char board[SIZE_BOARD][SIZE_BOARD], int row, int col, int lastRow, int lastCol)
 {
     cleanBlock(lastRow, lastCol);
@@ -124,6 +121,11 @@ void changePosition(char board[SIZE_BOARD][SIZE_BOARD], int row, int col, int la
     }
 }
 
+/**
+ * @brief Function to show winner in display.
+ *
+ * @param player Character of current player.
+ */
 void showWinner(int player)
 {
     /*              6543210 6543210*/
@@ -135,6 +137,9 @@ void showWinner(int player)
     HEX_raw(data_h, data_l);
 }
 
+/**
+ * @brief Function to handle game finish.
+ */
 void finishGame(void)
 {
     closeMouse();
@@ -142,6 +147,11 @@ void finishGame(void)
     HEX_close();
 }
 
+/**
+ * @brief Main function
+ *
+ * @return int
+ */
 int main(void)
 {
     char board[SIZE_BOARD][SIZE_BOARD] = {
@@ -158,6 +168,7 @@ int main(void)
     int x = 1;
     int y = 1;
 
+    /* Open devices */
     openMouse();
     KEY_open();
     HEX_open();
