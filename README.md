@@ -11,6 +11,10 @@
 - [Detalhes da Implementação](#detalhes-da-implementação)
   - [Entrada do mouse](#obtendo-valores-de-entrada-do-mouse)
   - [Desenhando no terminal](#desenhando-no-terminal)
+- [Desenvolvimento (Software Usados)](#desenvolvimento-software-usados)
+- [Testes](#testes)
+  - [Computadores Usados](#computadores-usados)
+  - [Casos de Testes](#casos-de-testes)
 
 ## Sobre
 
@@ -28,7 +32,15 @@ Integrantes:
 
 ### Pré-requisitos
 
-Para executar o projeto, é necessário ter uma placa DE1-SoC e um mouse conectado a uma entrada USB da placa.
+Para executar o projeto, é necessário ter uma placa DE1-SoC e um mouse conectado a uma entrada USB da placa. Além disso você precisa ter o projeto na sua máquina, para isso rode os seguintes comando:
+
+```bash
+# Clone esse repositório:
+$ git clone git@github.com:LaercioSR/sd-tic-tac-toe.git
+
+# Acesse a pasta do projeto:
+$ cd sd-tic-tac-toe
+```
 
 ### Compilação
 
@@ -115,3 +127,40 @@ Para mais detalhes veja na seguinte documentação: [console_codes — Linux man
   - Ex: \033[4C - Move o cursor 4 casas para esquerda
 - \033 [ m - Muda a cor dos caracteres/fundo
   - Ex: \033[31;42m - Muda os caracteres para vermelho e o fundo para verde
+
+## Desenvolvimento (Software Usados)
+
+Durante todo o desenvolvimento foi usado o _software_ Visual Studio Code (VS Code) para a escrita do código.
+
+Usamos também a plataforma [_Text to ASCII Art Generator_ (TAAG)](https://patorjk.com/software/taag) para criação do tabuleiro e dos valores para impressão no terminal.
+
+Para acesso a placa foi usado um terminal Linux (bash), além de SSH e SCP para conexão e transferência de arquivos para a placa, respectivamente.
+
+## Testes
+
+### Computadores Usados
+
+Durante o desenvolvimento os testes foram realizados tanto num laptop quanto direto na placa DE1-SoC.
+
+No laptop foi realizados alguns testes simples na lógica do jogo, sem o uso de outras entradas e saídas além do mouse e do terminal. O laptop usado possui as seguintes especificação:
+
+Especificação                  | Valor
+:----------------------------: | :------------------:
+Sistema Operacional            | Linux
+Processador                    | Intel Core-i3 7100u
+Arquitetura do Processador     | x86-64
+Núcleos do processador         | 2
+Frequência base do processador | 2.40 GHz
+
+### Casos de Testes
+
+Durante o desenvolvimento realizamos os seguintes casos de testes, sendo todos eles bêm sucedidos, funcionando como esperado:
+
+- Condição de vitória:
+  - na horizontal;
+  - na vertical;
+  - na diagonal.
+- Condição de empate;
+- Cliques em posições já preenchidas (não permitindo novo preenchimento).
+
+Dessa forma, todas as condições e recursos esperados do jogo foi desenvolvido.
