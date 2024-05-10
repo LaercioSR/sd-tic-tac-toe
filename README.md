@@ -1,6 +1,6 @@
 # TIC-TAC-TOE
 
-![Jogo em execução](https://raw.githubusercontent.com/LaercioSR/sd-tic-tac-toe/main/doc/screen_recording.gif)
+![Jogo em execução](https://raw.githubusercontent.com/LaercioSR/sd-tic-tac-toe/f187ce6d57cc7170733856483254a44fc44e9277/doc/screen_recording.gif)
 
 - [Sobre](#sobre)
 - [Como Executar](#como-executar)
