@@ -19,7 +19,7 @@ all: $(PROJECT_NAME)
 $(PROJECT_NAME): tictactoe.o draw.o mouse.o
 	$(CC) -o tictactoe tictactoe.o draw.o mouse.o $(CC_FLAG_FPGA)
 
-tictactoe.o: tictactoe.c draw.h mouse.h
+tictactoe.o: main.c draw.h mouse.h
 	$(CC) main.c -o tictactoe.o $(CC_FLAGS)
 
 draw.o: draw.c draw.h

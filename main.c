@@ -292,9 +292,11 @@ int main(void)
             isWinner = 0;
             x = 1;
             y = 1;
-            for (int i = 0; i < SIZE_BOARD; i++)
+
+            int i, j;
+            for (i = 0; i < SIZE_BOARD; i++)
             {
-                for (int j = 0; j < SIZE_BOARD; j++)
+                for (j = 0; j < SIZE_BOARD; j++)
                 {
                     board[i][j] = ' ';
                 }
